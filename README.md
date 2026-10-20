@@ -1,13 +1,48 @@
+<h1 align="center">
+Learning an Anchored Prompt Space for Continual Adaptation of Large Language Models
+</h1>
+
+<p align="center">
+  <b>
+    Rongguang Ye<sup>1,2</sup>,
+    Zhan Zhuang<sup>1</sup>,
+    Yichen Wu<sup>3</sup>,
+    Ming Tang<sup>2</sup>,
+    Kede Ma<sup>1</sup>
+  </b>
+</p>
+
+<p align="center">
+  <sup>1</sup>City University of Hong Kong
+  &nbsp;&nbsp;
+  <sup>2</sup>Southern University of Science and Technology
+  &nbsp;&nbsp;
+  <sup>3</sup>Harvard University
+</p>
+
+
+
+---
+Official implementation of **"Learning an Anchored Prompt Space for Continual Adaptation of Large Language Models."**
+
+## Overview
+
+<p align="center">
+  <img src="./overview.png" width="90%">
+</p>
+
+<p align="center">
+  <em>Overview of our Learning an Anchored Prompt Space (LAPS) framework.</em>
+</p>
+
 ## Method
 
 At continual stage `t`, LAPS performs four steps:
 
-1. Learn the current task vertex, then update the slow model with completion-only SFT.
+1. Learn the current task vertex, then update the backbone with SFT.
 2. Recalibrate the current vertex and transport historical vertices with token-level forward KL from the preceding-stage model.
-3. Freeze the slow model and all vertices, then train non-vertex Bézier controls with STCH.
-4. After the final task, run noisy expected-improvement search over the simplex and rerank the top candidates with repeated evaluation.
-
-The default configuration uses a degree-3 simplex, 30 soft-prompt tokens, `rebase_lr=0.01`, global batch size 128, and eight GPUs.
+3. Freeze the backbone and all vertices, then train non-vertex control prompts with STCH.
+4. After the final task, run expected-improvement search over the simplex and rerank the top candidates with repeated evaluation.
 
 ## Setup
 
@@ -53,7 +88,16 @@ experiments/train_trace_simplex_stch_stage.py
 experiments/search_trace_simplex_bo_ei_vllm.py
 src/simplex_bezier_prompt.py                Bézier simplex parameterization
 ```
-
 ## Citation
 
-A citation will be added after publication.
+If you find our work useful, please consider citing:
+
+```bibtex
+@misc{ye2026laps,
+  title        = {Learning an Anchored Prompt Space for Continual Adaptation of Large Language Models},
+  author       = {Rongguang Ye and Zhan Zhuang and Yichen Wu and Ming Tang and Kede Ma},
+  year         = {2026},
+  eprint       = {2609.32499},
+  archivePrefix = {arXiv}
+}
+```
